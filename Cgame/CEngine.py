@@ -24,6 +24,10 @@ class GameState():
         #     ["//", "//", "bQ", "//", "//", "//", "//", "//"]]
         self.moveFunctions = {'P': self.getPawnMoves, 'R': self.getRookMoves, 'N': self.getKnightMoves,
                                 'B': self.getBishopMoves,  'Q': self.getQueenMoves,  'K': self.getKingMoves,}
+        self.ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, 
+                    "5": 3, "6": 2, "7": 1, "8": 0}
+        self.filesToCols = {"a" : 0, "b": 1, "c" : 2, "d" : 3, 
+                    "e" : 4, "f" : 5, "g" : 6, "h" : 7}
 
         self.whiteToMove = True
         self.moveLog = []
@@ -36,6 +40,61 @@ class GameState():
         self.currentCastlingRight = CastleRights(True, True, True, True)
         self.castleRightLog = [CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks, self.currentCastlingRight.wqs, self.currentCastlingRight.bqs)]
 
+    def LoadFenString(self, Fenstring):
+        #Take FENString apart
+        firstEmpty =Fenstring.find(" ")
+
+        # Save Postion String
+        position = Fenstring[:firstEmpty]
+        # Move Right String
+        moveRight = Fenstring[firstEmpty+1:firstEmpty+3]
+        #Castle Rights
+        restString = (Fenstring[firstEmpty+3:]).split(" ")
+        castleRights = restString[0]
+        enpassant = restString[1]
+        #EnPassant
+        print(f"{position}{moveRight}{castleRights}{enpassant}")
+        positionSliced = position.split("/")
+        #Load Piece Position and Update King Position
+        for index, row in enumerate(positionSliced):
+            col = 0
+            for char in row:
+                
+            #Check if Number or Char 
+                if char.isdigit():
+                    for i in range(int(char)):
+                        self.board[index][col] = "//"
+                        col+=1
+                elif char.isupper():
+                    self.board[index][col] = "w" + char
+                    if char == "K":
+                          self.whiteKingLocation = (index, col)
+                    col+=1
+                    
+                else:
+                    self.board[index][col] = "b" + char.capitalize()
+                    if char == "k":
+                        self.blackKingLocation = (index, col)
+                    col+=1
+                    
+
+        #Update Move Right           
+        self.whiteToMove = True if moveRight == "w" else False
+        
+   
+
+        #Update Castle Rights
+        self.currentCastlingRight = CastleRights(True if castleRights.find("K") != -1 else False, 
+                                                    True if castleRights.find("k") != -1 else False, 
+                                                    True if castleRights.find("Q") != -1 else False, 
+                                                    True if castleRights.find("q") != -1 else False)
+
+        #Update Enpassant
+        if enpassant == "-":
+            self.enpassantPossible = ()
+        else:
+            self.enpassantPossible = (self.ranksToRows[enpassant[0:]], self.filesToCols[enpassant[:1]])
+        
 
     def makeMove(self, move):
         self.board[move.startRow][move.startCol] = "//"

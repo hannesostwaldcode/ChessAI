@@ -71,7 +71,7 @@ def findRandomMove(validMoves):
 
 
 #Helper That starts the recoursion of the currently used Algorithm
-def findBestMove(gs, validMoves, retrunQueue):
+def findBestMove(gs, validMoves, retrunQueue=None):
     global nextMove, runs
     nextMove = None
     random.shuffle(validMoves)
@@ -80,7 +80,10 @@ def findBestMove(gs, validMoves, retrunQueue):
     #findMoveMinMax(gs, validMoves, DEPTH,  gs.whiteToMove)
     #pvs(gs, validMoves, DEPTH, -CHECKMATE,  CHECKMATE, 1 if gs.whiteToMove else -1)
     print(runs)
-    retrunQueue.put(nextMove)
+    if retrunQueue != None:
+        retrunQueue.put(nextMove)
+    else:
+        return nextMove
 
 #NegMax with Alpha/Beta Prunning - Active
 def findMoveNegMax(gs, validMoves, depth, alpha, beta, turnMultiplier):

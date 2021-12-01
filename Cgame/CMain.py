@@ -1,5 +1,3 @@
-
-
 import pygame as p
 import CEngine, MoveAI
 from multiprocessing import Process, Queue
