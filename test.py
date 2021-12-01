@@ -61,10 +61,10 @@ class TestScoreBoard(unittest.TestCase):
             ["//", "//", "//", "//", "//", "//", "//", "//"],
             ["//", "//", "//", "//", "//", "//", "//", "//"],
             ["//", "//", "//", "//", "//", "//", "//", "//"]]
-        self.gs.LoadFenString("8/8/8/2k5/4K3/8/8/8 w KQ - 0 1")
+        self.gs.LoadFenString("8/8/8/2k5/4K3/8/8/8 w - - 0 1")
         self.assertEqual(self.gs.board, twoKingBoard, "FenString should load correctly")
         self.assertEqual((self.gs.currentCastlingRight.wks, self.gs.currentCastlingRight.wqs , self.gs.currentCastlingRight.bks, self.gs.currentCastlingRight.bqs),
-                        (True, True, False, False), "Castle Rights")
+                        (False, False, False, False), "Castle Rights")
         self.assertEqual(self.gs.whiteKingLocation, (4, 4), "WK location")
 
 
@@ -79,12 +79,6 @@ class TestScoreBoard(unittest.TestCase):
         self.gs.LoadFenString("4k3/4P3/4K3/8/8/8/8/8 b - - 0 1")
         self.gs.getValidMoves()
         self.assertEqual(self.gs.staleMate, True, "Stalemate not True")
-
-    def test_findMate(self): 
-        self.gs.LoadFenString("6k1/5ppp/8/4R3/8/8/5K2/8 w - - 0 1")
-        validMoves = self.gs.getValidMoves()
-        AIMove = MoveAI.findBestMove(self.gs, validMoves)
-        self.assertEqual((AIMove.endCol, AIMove.endRow), (0,4), "didnt find Checkmate")
 
 if __name__ == '__main__':
     unittest.main()
