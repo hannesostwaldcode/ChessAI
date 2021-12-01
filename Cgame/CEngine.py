@@ -56,25 +56,25 @@ class GameState():
         print(f"{position}{moveRight}{castleRights}{enpassant}")
         positionSliced = position.split("/")
         #Load Piece Position and Update King Position
-        for index, row in enumerate(positionSliced):
+        for row, rowData in enumerate(positionSliced):
             col = 0
-            for char in row:
+            for char in rowData:
                 
             #Check if Number or Char 
                 if char.isdigit():
                     for i in range(int(char)):
-                        self.board[index][col] = "//"
+                        self.board[row][col] = "//"
                         col+=1
                 elif char.isupper():
-                    self.board[index][col] = "w" + char
+                    self.board[row][col] = "w" + char
                     if char == "K":
-                          self.whiteKingLocation = (index, col)
+                          self.whiteKingLocation = (row, col)
                     col+=1
                     
                 else:
-                    self.board[index][col] = "b" + char.capitalize()
+                    self.board[row][col] = "b" + char.capitalize()
                     if char == "k":
-                        self.blackKingLocation = (index, col)
+                        self.blackKingLocation = (row, col)
                     col+=1
                     
 
