@@ -49,12 +49,13 @@ class GameState():
 
        
         positionSliced = position.split("/")
+        
         #Load Piece Position and Update King Position
         for row, rowData in enumerate(positionSliced):
             col = 0
             for char in rowData:
                 
-            #Check if Number or Char 
+            
                 if char.isdigit():
                     for i in range(int(char)):
                         self.board[row][col] = "//"
@@ -88,6 +89,11 @@ class GameState():
             self.enpassantPossible = ()
         else:
             self.enpassantPossible = (self.ranksToRows[enpassant[0:]], self.filesToCols[enpassant[:1]])
+        
+        #Empty Logs from possible earlier Positions
+        self.moveLog = []
+        self.enpassantPossibleLog = [self.enpassantPossible]
+        self.castleRightLog = [CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks, self.currentCastlingRight.wqs, self.currentCastlingRight.bqs)]
         
 
     def makeMove(self, move):
