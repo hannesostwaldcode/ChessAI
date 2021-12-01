@@ -41,19 +41,13 @@ class GameState():
         self.castleRightLog = [CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks, self.currentCastlingRight.wqs, self.currentCastlingRight.bqs)]
 
     def LoadFenString(self, Fenstring):
-        #Take FENString apart
-        firstEmpty =Fenstring.find(" ")
+        splitstring = Fenstring.split(" ")
+        position = splitstring[0]
+        moveRight = splitstring[1]
+        castleRights = splitstring[2]
+        enpassant = splitstring[3]
 
-        # Save Postion String
-        position = Fenstring[:firstEmpty]
-        # Move Right String
-        moveRight = Fenstring[firstEmpty+1:firstEmpty+3]
-        #Castle Rights
-        restString = (Fenstring[firstEmpty+3:]).split(" ")
-        castleRights = restString[0]
-        enpassant = restString[1]
-        #EnPassant
-        print(f"{position}{moveRight}{castleRights}{enpassant}")
+       
         positionSliced = position.split("/")
         #Load Piece Position and Update King Position
         for row, rowData in enumerate(positionSliced):
